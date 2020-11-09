@@ -3,11 +3,13 @@
 Code for paper *Wandering Within a World: Online Contextualized Few-Shot
 Learning* [[arxiv](https://arxiv.org/abs/2007.04546)]
 
+Authors: Mengye Ren, Michael L. Iuzzolino, Michael C. Mozer, Richard S. Zemel
+
 ## RoamingRooms Dataset
 
 <span>
 <img src="img/vid1.gif" width="250"><img src="img/vid2.gif" width="250"><img src="img/vid3.gif" width="250"></span>
-<!-- 
+<!--
 ![](img/vid1.gif | width=150)
 ![](img/vid2.gif | width=150)
 ![](img/vid3.gif | width=150) -->
@@ -29,11 +31,14 @@ The whole dataset is around 60 GB. It has 1.2M video frames with 7k unique
 object instance classes. Please refer to our paper for more statistics of the
 dataset.
 
+If you have downloaded the full Matterport3D dataset already, check [here](sim)
+for a script to generate RoamingRooms.
+
 ## System Requirements
 
 Our code is tested on Ubuntu 18.04 with GPU capability. We provide docker
 files for reproducible environments. We recommend at least 20GB CPU memory and
-11GB GPU memory. 2-4 GPUs are required for multi-GPU experiments. Our code 
+11GB GPU memory. 2-4 GPUs are required for multi-GPU experiments. Our code
 is based on TensorFlow 2.
 
 ## Installation Using Docker (Recommended)
@@ -77,7 +82,7 @@ conda install pip
 
 8. Modify installation paths in `install.sh`
 
-9. Run `install.sh` 
+9. Run `install.sh`
 
 
 ## Setup Datasets
@@ -156,7 +161,7 @@ Table 1: RoamingOmniglot Results (Supervised)
 | Online MatchingNet | 88.69   | 84.82 ± 0.15   | 95.55 ± 0.11   |[link](https://bit.ly/3edu8D4)|
 | Online IMP         | 90.15   | 85.74 ± 0.15   | 96.66 ± 0.09   |[link](https://bit.ly/3ddMq5C)|
 | Online ProtoNet    | 90.49   | 85.68 ± 0.15   | 96.95 ± 0.09   |[link](https://bit.ly/2YbeFxB)|
-| CPM (Ours)         |**94.17**|**91.99** ± 0.11|**97.74** ± 0.08|[link](https://bit.ly/2IhQ2dx|
+| CPM (Ours)         |**94.17**|**91.99** ± 0.11|**97.74** ± 0.08|[link](https://bit.ly/2IhQ2dx)|
 
 
 Table 2: RoamingOmniglot Results (Semi-supervised)
