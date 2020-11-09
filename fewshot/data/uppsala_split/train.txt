@@ -1,0 +1,13 @@
+blanket2-without-rotations
+ceiling2-without-rotations
+floor2-without-rotations
+grass1-without-rotations
+linseeds1-without-rotations
+pearlsugar1-without-rotations
+rice2-without-rotations
+scarf2-without-rotations
+screen1-without-rotations
+seat2-without-rotations
+sesameseeds1-without-rotations
+stone1-without-rotations
+stoneslab1-without-rotations

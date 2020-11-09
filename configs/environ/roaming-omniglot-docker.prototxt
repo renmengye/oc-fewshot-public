@@ -1,0 +1,12 @@
+data_folder: "./data/omniglot-vinyals"
+dataset: "omniglot"
+results: "./results/oc-fewshot"
+checkpoint: "/checkpoint/mren"
+train_fs_split: "ren_train"
+val_fs_split: "ren_val"
+test_fs_split: "ren_test"
+image_size: 28
+crop_size: 32
+random_crop: true
+random_flip: false
+random_color: false

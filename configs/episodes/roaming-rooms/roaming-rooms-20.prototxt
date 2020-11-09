@@ -1,0 +1,7 @@
+nway: 40
+semisupervised: false
+maxlen: 5
+distractor_nquery: 0
+distractor_nshot: 0
+distractor_nway: 5
+max_num_per_cls: 8

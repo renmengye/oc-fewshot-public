@@ -1,0 +1,47 @@
+// OML model configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+message OMLConfig {
+
+  // Number of channels for each layer.
+  repeated int32 num_filters = 1;
+
+  // Number of output classes.
+  optional int32 num_classes = 2;
+
+  // Inner loop learning rate.
+  optional float inner_lr = 3;
+
+  // Inner loop gradient truncation.
+  optional int32 inner_loop_truncate_steps = 4 [default = -1];
+
+  // Inner loop gradient truncation.
+  optional int32 repeat_steps = 5 [default = 1];
+
+  // Inner loop loss, "softmax" or "sigmoid" or "mix".
+  optional string inner_loop_loss = 6 [default = "softmax"];
+
+  // How to compute unknown logits, "sum", "max", or "radii".
+  optional string unknown_logits = 7 [default = "max"];
+
+  // How to compute unknown logits, "softmax" or "sigmoid".
+  optional string unknown_output_type = 8 [default = "softmax"];
+
+  // Select active classes.
+  optional bool select_active_classes = 9 [default = false];
+
+  // Learn initial weight.
+  optional bool learn_weight_init = 10 [default = false];
+
+  // Use cosine.
+  optional bool cosine_classifier = 11 [default = false];
+  
+  // Use bias.
+  optional bool classifier_bias = 12 [default = true];
+
+  // Whether to run semi-supervised.
+  optional bool semisupervised = 13 [default = false];
+}

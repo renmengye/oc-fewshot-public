@@ -1,0 +1,6 @@
+sample_imgs/
+sim_vids/
+stats/
+sample_walks_with_zoom/
+*.gif
+*.mp4

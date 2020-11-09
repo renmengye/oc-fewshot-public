@@ -1,0 +1,63 @@
+backbone_class: "resnet_12_backbone"
+model_class: "oml_trunc_sigmoid_net"
+memory_class: "oml"
+num_classes: 10
+fix_unknown: true
+roi_pooling_backbone: true
+num_episodes: -1
+
+resnet_config: {
+    height: 160
+    width: 120
+    num_channels: 3
+    num_residual_units: 1
+    num_residual_units: 1
+    num_residual_units: 1
+    num_residual_units: 1
+    num_filters: 32
+    num_filters: 64
+    num_filters: 128
+    num_filters: 256
+    strides: 2
+    strides: 2
+    strides: 2
+    strides: 1
+    weight_decay: 2e-4
+    normalization: "batch_norm"
+    global_avg_pool: false
+    data_format: "NCHW"
+    add_last_relu: false
+}
+
+optimizer_config: {
+    optimizer: "adam"
+    lr_list: 1e-3
+    lr_list: 1e-4
+    lr_list: 1e-5
+    lr_decay_steps: 6400
+    lr_decay_steps: 12800
+    max_train_steps: 16000
+    batch_size: 2
+    lr_scaling: false
+    clip_norm: 5.0
+}
+
+oml_config: {
+    num_filters: 512
+    num_classes: 10
+    inner_lr: 1e-2
+    inner_loop_truncate_steps: 20
+    inner_loop_loss: "softmax"
+    unknown_output_type: "softmax"
+    unknown_logits: "max"
+    select_active_classes: false
+    learn_weight_init: false
+    cosine_classifier: true
+    classifier_bias: false
+}
+
+train_config: {
+    steps_per_val: 500
+    steps_per_save: 500
+    steps_per_log: 10
+}

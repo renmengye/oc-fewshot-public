@@ -1,0 +1,11 @@
+// LSTM module configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+message LSTMConfig {
+  optional int32 hidden_dim = 1;
+  optional int32 nstack = 2 [default = 1];
+  optional bool layernorm = 3;
+}

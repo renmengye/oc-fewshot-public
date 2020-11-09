@@ -1,0 +1,44 @@
+backbone_class: "c4_backbone"
+model_class: "lstm_sigmoid_net"
+memory_class: "stack_lstm"
+num_classes: 10
+fix_unknown: true
+freeze_backbone: false
+
+c4_config: {
+    height: 28
+    width: 28
+    num_channels: 1
+    num_filters: 64
+    num_filters: 64
+    num_filters: 64
+    num_filters: 64
+    weight_decay: 5e-5
+    data_format: "NHWC"
+    pool_padding: "VALID"
+    normalization: "batch_norm"
+}
+
+optimizer_config: {
+    optimizer: "adam"
+    lr_list: 1e-3
+    lr_list: 1e-4
+    lr_list: 1e-5
+    lr_decay_steps: 40000
+    lr_decay_steps: 60000
+    max_train_steps: 80000
+    batch_size: 16
+    clip_norm: 5.0
+}
+
+lstm_config: {
+    hidden_dim: 256
+    nstack: 2
+    layernorm: true
+}
+
+train_config: {
+    steps_per_val: 1000
+    steps_per_save: 1000
+    steps_per_log: 10
+}

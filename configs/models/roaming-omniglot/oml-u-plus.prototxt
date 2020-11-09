@@ -1,0 +1,52 @@
+backbone_class: "c4_backbone"
+model_class: "oml_trunc_sigmoid_net"
+memory_class: "oml"
+num_classes: 10
+fix_unknown: true
+
+c4_config: {
+    height: 28
+    width: 28
+    num_channels: 1
+    num_filters: 64
+    num_filters: 64
+    num_filters: 64
+    num_filters: 64
+    weight_decay: 5e-5
+    data_format: "NHWC"
+    normalization: "batch_norm"
+    pool_padding: "VALID"
+    add_last_relu: false
+}
+
+optimizer_config: {
+    optimizer: "adam"
+    lr_list: 1e-3
+    lr_list: 1e-4
+    lr_list: 1e-5
+    lr_decay_steps: 8000
+    lr_decay_steps: 10000
+    max_train_steps: 12000
+    batch_size: 16
+    clip_norm: 5.0
+}
+
+oml_config: {
+    num_filters: 64
+    num_classes: 10
+    inner_lr: 1e-2
+    inner_loop_truncate_steps: 5
+    inner_loop_loss: "softmax"
+    unknown_output_type: "softmax"
+    unknown_logits: "max"
+    select_active_classes: false
+    learn_weight_init: false
+    cosine_classifier: true
+    classifier_bias: false
+}
+
+train_config: {
+    steps_per_val: 500
+    steps_per_save: 500
+    steps_per_log: 10
+}

@@ -1,0 +1,112 @@
+syntax = "proto2";
+
+package fewshot.configs;
+
+message EpisodeConfig {
+  // Base data sampler.
+  // Choice of `fewshot`, `incremental`, `constant_prob`, `crp`.
+  optional string base_sampler = 1 [default = 'fewshot'];
+
+  // Number of classes
+  optional int32 nway = 2 [default = 5];
+
+  // Number of query examples per class.
+  optional int32 nquery = 3 [default = 5];
+
+  // Maximum shots for incremental sampler.
+  optional int32 nshot_max = 4 [default = 5];
+
+  // Maximum number of support images per class.
+  optional int32 max_num_per_cls = 5 [default = 20];
+
+  // Whether an episode is supervised or not.
+  optional bool semisupervised = 6;
+
+  // Target label ratio for semisupervised episodes.
+  optional float label_ratio = 7 [default = 0.1];
+
+  // Maximum episode length.
+  optional int32 maxlen = 8 [default = 40];
+
+  // Whether to allow repeating images in an episode.
+  optional bool allow_repeat = 9;
+
+  // Whether to enable query set in an episode.
+  optional bool use_query = 10;
+
+  // Whether to fix the unknown class ID.
+  optional bool fix_unknown = 11 [default = true];
+
+  // Whether making it a hierarchical sampler.
+  optional bool hierarchical = 100;
+
+  // Whether to use dataset class hierarchy.
+  optional bool use_class_hierarchy = 101;
+
+  // Number of sequential stages for hierarchical sampler.
+  optional int32 nstage = 102 [default = 1];
+
+  // Blender for blending multiple episodes.
+  optional string blender = 103 [default = 'hard'];
+
+  // Blur blender window size.
+  optional int32 blur_window_size = 104 [default = 10];
+
+  // Blur blender stride size
+  optional int32 blur_stride = 105 [default = 3];
+
+  // Number of blur operation runs.
+  optional int32 blur_nrun = 106 [default = 2];
+
+  // Markov switching process probability.
+  optional float markov_switch_prob = 107 [default = 0.5];
+
+  // Whether to mix class hierarchy and non class hierarchy.
+  optional bool mix_class_hierarchy = 108;
+
+  // Whether to use the same family for different context.
+  optional bool use_same_family = 109;
+
+  // Whether to shuffle temporal ordering.
+  optional bool shuffle_time = 110;
+
+  // Whether to use new class hierarchy.
+  optional bool use_new_class_hierarchy = 111; 
+
+  // New class parameter for constant prob sampler.
+  optional float prob_new = 200 [default = 0.4];
+
+  // Alpha parameter for CRP sampler.
+  optional float crp_alpha = 201 [default = 0.5];
+
+  // Theta parameter for CRP sampler.
+  optional float crp_theta = 202 [default = 1.0];
+
+  // Number of queries for distractor images.
+  optional int32 distractor_nquery = 300 [default = 2];
+
+  // Number of shots for distractor images.
+  optional int32 distractor_nshot = 301 [default = 2];
+
+  // Number of classes for distractor images.
+  optional int32 distractor_nway = 302 [default = 5];
+
+  // Add random box occluder.
+  optional bool random_box = 400;
+
+  // Add random background.
+  // Choice of `none`, `uppsala`, `uppsala_double`.
+  optional string random_background = 401 [default = 'none'];
+
+  // Whether to randomly drop the background hue.
+  optional bool random_background_random_apply = 402;
+
+  // When random apply is true, use this probability to sample.
+  optional float random_background_apply_prob = 403 [default = 1.0];
+
+  // When random apply is true, this will randomly choose a background and ignore the stage iD.
+  optional bool random_background_random_context = 404;
+
+  // Add gaussian noise to the random background.
+  optional float random_background_gaussian_std = 405 [default = -1.0];
+}

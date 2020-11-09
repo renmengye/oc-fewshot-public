@@ -1,0 +1,20 @@
+// Hybrid module configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+message HybridConfig {
+
+  // New ablation options:
+  optional bool use_pred_beta_gamma = 1 [default = true];
+  optional bool use_feature_fuse = 2 [default = true];
+  optional bool use_feature_fuse_gate = 3 [default = true];
+  optional bool use_feature_scaling = 4 [default = true];
+  optional bool use_feature_memory_only = 5 [default = false];
+  optional bool use_element_fuse_gate = 6 [default = false];
+  optional bool skip_unk_memory_update = 100 [default = false];
+  optional bool use_ssl = 101 [default = true];
+  optional bool use_ssl_beta_gamma_write = 102 [default = true];
+  optional bool use_ssl_temp = 103 [default = true];
+}

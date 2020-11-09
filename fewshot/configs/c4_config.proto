@@ -1,0 +1,25 @@
+// General CNN configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+message C4Config {
+  optional int32 height = 1;
+  optional int32 width = 2;
+  optional int32 num_channels = 3;
+  repeated int32 num_filters = 4;
+  optional float weight_decay = 5;
+  optional string data_format = 6 [default = "NCHW"];
+  optional string normalization = 7 [default = "batch_norm"];
+  repeated int32 num_groups = 8; // Group norm parameters.
+  repeated int32 pool = 9;
+  optional bool add_last_relu = 10 [default = true];
+  optional string pool_padding = 11 [default = "SAME"];
+  optional float activation_scaling = 12 [default = -1.0];
+  // Dropout features.
+  optional bool add_dropout = 13;
+  // Dropout rate.
+  optional float dropout_rate = 14;
+  repeated int32 num_fc_dim = 15;
+}

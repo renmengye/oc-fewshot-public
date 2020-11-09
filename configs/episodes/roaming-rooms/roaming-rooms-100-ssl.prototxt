@@ -1,0 +1,8 @@
+nway: 40
+semisupervised: true
+label_ratio: 0.3
+maxlen: 100
+distractor_nquery: 0
+distractor_nshot: 0
+distractor_nway: 5
+max_num_per_cls: 8

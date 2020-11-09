@@ -1,0 +1,7 @@
+blanket1-without-rotations
+canvas1-without-rotations
+ceiling1-without-rotations
+floor1-without-rotations
+scarf1-without-rotations
+rice1-without-rotations
+stone2-without-rotations

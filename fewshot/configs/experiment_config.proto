@@ -1,0 +1,111 @@
+// Experiment configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+import "fewshot/configs/c4_config.proto";
+import "fewshot/configs/hybrid_config.proto";
+import "fewshot/configs/lstm_config.proto";
+import "fewshot/configs/mann_config.proto";
+import "fewshot/configs/memory_net_config.proto";
+import "fewshot/configs/oml_config.proto";
+import "fewshot/configs/optimizer_config.proto";
+import "fewshot/configs/protonet_config.proto";
+import "fewshot/configs/resnet_config.proto";
+import "fewshot/configs/train_config.proto";
+
+message ExperimentConfig {
+  // CNN backbone.
+  optional string backbone_class = 1;
+
+  // Class name of model.
+  optional string model_class = 2;
+
+  // Data type.
+  optional string dtype = 3 [default = "float32"];
+
+  // Total number of output classes.
+  optional int32 num_classes = 4;
+
+  // Number of training examples.
+  optional int32 num_steps = 5;
+
+  // Memory class.
+  optional string memory_class = 6;
+
+  // Whether or not to freeze backbone.
+  optional bool freeze_backbone = 7 [default = true];
+
+  // Whether to set a different learning rate for the backbone.
+  optional bool set_backbone_lr = 8;
+
+  // Set a learning rate multiplier for the backbone.
+  optional float backbone_lr_multiplier = 9 [default = 1.0];
+
+  // Whether to have a fixed unknown class ID.
+  optional bool fix_unknown = 10;
+
+  // Multiplier for the unknown class loss.
+  optional float unknown_loss = 11 [default = 1.0];
+
+  // Whether or not to renormalize the logits.
+  optional bool renormalize_logits = 12 [default = true];
+
+  // Number of episodes for evaluation.
+  optional int32 num_episodes = 13 [default = 2000];
+
+  // Whether to feed in stage ID.
+  optional bool add_stage_id = 14 [default = false];
+
+  // Whether perform in stage training / testing.
+  optional bool in_stage = 15 [default = false];
+
+  // Whether to perform ROI pooling with mask attention.
+  optional bool roi_pooling_backbone = 16 [default = false];
+
+  // Sub memory class.
+  optional string sub_memory_class = 17 [default = "dnc"];
+
+  // Sub memory class 2.
+  optional string sub_memory_class2 = 18 [default = "ssl_min_dist_proto_memory"];
+
+  // Whether to store SSL with a schedule.
+  optional bool ssl_store_schedule = 19 [default = false];
+
+  // Disable binary xent for self-predicted unknowns.
+  optional bool disable_loss_self_unk = 20 [default = false];
+
+  // "softmax" or "sigmoid".
+  optional string loss_fn = 21 [default = "softmax"];
+
+  // 4-layer CNN config.
+  optional fewshot.configs.C4Config c4_config = 101;
+
+  // ResNet config.
+  optional fewshot.configs.ResnetConfig resnet_config = 102;
+  
+  // ProtoNet config.
+  optional fewshot.configs.ProtonetConfig protonet_config = 1000;
+  
+  // Memory network config.
+  optional fewshot.configs.MemoryNetConfig memory_net_config = 1001;
+  
+  // LSTM memory module config.
+  optional fewshot.configs.LSTMConfig lstm_config = 1002;
+  
+  // Memory augmented module config.
+  optional fewshot.configs.MANNConfig mann_config = 1003;
+
+  // OML config.
+  optional fewshot.configs.OMLConfig oml_config = 1004;
+
+  // Hybrid model config.
+  optional fewshot.configs.HybridConfig hybrid_config = 1005;
+
+  // Optimizer config.
+  optional fewshot.configs.OptimizerConfig optimizer_config = 2000;
+
+  // Training config.
+  optional fewshot.configs.TrainConfig train_config = 3000;
+}

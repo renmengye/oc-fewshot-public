@@ -1,0 +1,60 @@
+// Dataset and checkpoint configuration.
+syntax = "proto2";
+
+package fewshot.configs;
+
+message EnvironmentConfig {
+  // Path to the dataset.
+  optional string data_folder = 1;
+
+  // Dataset name.
+  optional string dataset = 2;
+
+  // Save folder.
+  optional string results = 3;
+
+  // Checkpoint folder (if different from save folder).
+  optional string checkpoint = 4;
+
+  // Split name for train.
+  optional string train_split = 100;
+
+  // Split name for validation.
+  optional string val_split = 101;
+
+  // Split name for test.
+  optional string test_split = 102;
+
+  // Split name for few-shot training. 
+  optional string train_fs_split = 103;
+
+  // Split name for few-shot validationn.
+  optional string val_fs_split = 104;
+
+  // Split name for few-shot test.
+  optional string test_fs_split = 105;
+
+  // Image resize size.
+  optional int32 image_size = 200;
+
+  // Image crop size.
+  optional int32 crop_size = 201;
+
+  // Whether perform random crop.
+  optional bool random_crop = 202;
+
+  // Whether perform random flip.
+  optional bool random_flip = 203;
+
+  // Whether perform random color.
+  optional bool random_color = 204;
+
+  // Whether perform random rotate.
+  optional bool random_rotate = 205;
+
+  // Mean pixel values for each channel.
+  repeated float mean_pix = 300;
+
+  // Std pixel values for each channel.
+  repeated float std_pix = 301;
+}

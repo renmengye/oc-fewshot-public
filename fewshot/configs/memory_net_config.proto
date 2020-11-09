@@ -1,0 +1,28 @@
+// Memory module configurations.
+
+syntax = "proto2";
+
+package fewshot.configs;
+
+message MemoryNetConfig {
+  optional int32 max_classes = 1;
+  optional float radius_init = 2;
+  optional float alpha = 3;
+  optional int32 max_items = 4;
+  optional float log_sigma_init = 5;
+  optional float log_lambda_init = 6;
+  optional int32 max_stages = 7;
+  optional int32 buffer_size = 8;
+  optional bool buffer_dropout = 9;
+
+  // Similarity function.
+  optional string similarity = 10 [default = "euclidean"];
+  
+  // Initial value of the beta write.
+  optional float radius_init_write = 11;
+
+  // Choice of "radii" or "max"
+  optional string unknown_logits = 12 [default = "radii"];
+
+  optional float temp_init = 13 [default = 10.0];
+}
