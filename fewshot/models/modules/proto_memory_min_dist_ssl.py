@@ -20,49 +20,27 @@ LOGINF = 1e6
 @RegisterModule('ssl_min_dist_proto_memory')
 class SemiSupervisedMinDistProtoMemory(SemiSupervisedProtoMemory):
 
-  def __init__(self,
-               name,
-               dim,
-               radius_init,
-               max_classes=20,
-               fix_unknown=False,
-               unknown_id=None,
-               similarity="euclidean",
-               static_beta_gamma=True,
-               radius_init_write=None,
-               use_ssl_beta_gamma_write=True,
-               unknown_logits="radii",
-               temp_init=10.0,
-               dtype=tf.float32):
+  def __init__(self, name, dim, config, dtype=tf.float32):
     super(SemiSupervisedMinDistProtoMemory, self).__init__(
-        name,
-        dim,
-        max_classes=max_classes,
-        fix_unknown=fix_unknown,
-        unknown_id=unknown_id,
-        similarity=similarity,
-        temp_init=temp_init,
-        dtype=dtype)
+        name, dim, config, dtype=dtype)
+    radius_init = config.radius_init
+    unknown_logits = config.unknown_logits
     self._radius_init = radius_init
     self._unknown_logits = unknown_logits
     log.info('Radius init {}'.format(radius_init))
-    if radius_init_write is not None:
-      self._radius_init_write = radius_init_write
-      log.info('Radius init write {}'.format(radius_init_write))
-    else:
-      self._radius_init_write = radius_init
-    self._use_ssl_beta_gamma_write = use_ssl_beta_gamma_write
-    if static_beta_gamma:
-      with variable_scope(name):
-        self._beta = self._get_variable(
-            "beta", self._get_constant_init([], radius_init))
-        self._gamma = self._get_variable("gamma",
-                                         self._get_constant_init([], 1.0))
+    self._radius_init_write = config.radius_init_write
+    log.info('Radius init write {}'.format(config.radius_init_write))
+    self._use_ssl_beta_gamma_write = config.use_ssl_beta_gamma_write
+    with variable_scope(name):
+      self._beta = self._get_variable("beta",
+                                      self._get_constant_init([], radius_init))
+      self._gamma = self._get_variable("gamma", self._get_constant_init([],
+                                                                        1.0))
 
-        self._beta2 = self._get_variable(
-            "beta2", self._get_constant_init([], self._radius_init_write))
-        self._gamma2 = self._get_variable("gamma2",
-                                          self._get_constant_init([], 1.0))
+      self._beta2 = self._get_variable(
+          "beta2", self._get_constant_init([], self._radius_init_write))
+      self._gamma2 = self._get_variable("gamma2",
+                                        self._get_constant_init([], 1.0))
 
   def forward_one(self,
                   x,
@@ -120,6 +98,9 @@ class SemiSupervisedMinDistProtoMemory(SemiSupervisedProtoMemory):
                add_new=tf.constant(True),
                is_training=tf.constant(True)):
     """See ProtoMemory for documentation."""
+    if self._normalize_feature:
+      x = self._normalize(x)
+
     x = tf.expand_dims(x, 1)  # [B, 1, D]
     prototypes = storage
     K = self.max_classes

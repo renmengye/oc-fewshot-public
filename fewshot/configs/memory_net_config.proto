@@ -5,14 +5,32 @@ syntax = "proto2";
 package fewshot.configs;
 
 message MemoryNetConfig {
+
+  // Maximum number of classes.
   optional int32 max_classes = 1;
+
+  // Initialization for radius.
   optional float radius_init = 2;
+
+  // Not currently used.
   optional float alpha = 3;
+
+  // For example based storage, maximum number of items.
   optional int32 max_items = 4;
+  
+  // Not currently used.
   optional float log_sigma_init = 5;
+
+  // Not currently used.
   optional float log_lambda_init = 6;
+  
+  // Not currently used.
   optional int32 max_stages = 7;
+
+  // Not currently used.
   optional int32 buffer_size = 8;
+
+  // Not currently used.
   optional bool buffer_dropout = 9;
 
   // Similarity function.
@@ -25,4 +43,22 @@ message MemoryNetConfig {
   optional string unknown_logits = 12 [default = "radii"];
 
   optional float temp_init = 13 [default = 10.0];
+
+  // For GRU based models.
+  optional bool dense_update = 14 [default = true];
+
+  // For GRU based models, initialize forget gate.
+  optional float gru_bias_init = 15 [default = -2.0];
+
+  // Whether to normalize feature prior to read/write.
+  optional bool normalize_feature = 16 [default = false];
+
+  // Going to be coupled with hybrid_config.
+  optional bool use_ssl_beta_gamma_write = 17 [default = true];
+
+  // Going to be coupled with main config.
+  optional bool fix_unknown = 18 [default = true];
+
+  // ID for unknown.
+  optional int32 unknown_id = 19 [default = 40];
 }

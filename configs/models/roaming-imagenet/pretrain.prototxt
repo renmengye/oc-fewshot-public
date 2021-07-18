@@ -1,0 +1,45 @@
+backbone_class: "resnet_12_backbone"
+model_class: "pretrain_net"
+num_classes: 351
+fix_unknown: true
+
+resnet_config: {
+    height: 84
+    width: 84
+    num_channels: 3
+    num_residual_units: 1
+    num_residual_units: 1
+    num_residual_units: 1
+    num_residual_units: 1
+    num_filters: 32
+    num_filters: 64
+    num_filters: 128
+    num_filters: 256
+    strides: 2
+    strides: 2
+    strides: 2
+    strides: 1
+    weight_decay: 2e-4
+    normalization: "batch_norm"
+    global_avg_pool: true
+    data_format: "NCHW"
+    add_last_relu: false
+}
+
+optimizer_config: {
+    optimizer: "momentum"
+    lr_list: 1e-1
+    lr_list: 1e-2
+    lr_list: 1e-3
+    lr_decay_steps: 20000
+    lr_decay_steps: 30000
+    max_train_steps: 40000
+    batch_size: 256
+    clip_norm: 5.0
+}
+
+train_config: {
+    steps_per_val: 1000
+    steps_per_save: 1000
+    steps_per_log: 10
+}

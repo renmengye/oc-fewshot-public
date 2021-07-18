@@ -76,6 +76,11 @@ class LSTMSigmoidNet(EpisodeRecurrentSigmoidNet):
     y = tf.where(mask, -LOGINF, y)
     return y
 
+  def _normalize(self, x):
+    """Normalize the feature vector."""
+    return x / tf.maximum(
+        tf.sqrt(tf.reduce_sum(x**2, [-1], keepdims=True)), 1e-5)
+
   def forward(self, x, y, s=None, x_test=None, is_training=tf.constant(True)):
     """Make a forward pass.
 
@@ -90,6 +95,8 @@ class LSTMSigmoidNet(EpisodeRecurrentSigmoidNet):
       y_pred_test: [B, T']. Query example prediction, if exists.
     """
     x = self.run_backbone(x, is_training=is_training)
+    if self.config.memory_net_config.normalize_feature:
+      x = self._normalize(x)
     B = tf.constant(x.shape[0])
     T = tf.constant(x.shape[1])
     y_pred = tf.TensorArray(self.dtype, size=T)

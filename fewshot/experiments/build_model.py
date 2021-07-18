@@ -41,6 +41,9 @@ def build_pretrain_net(config, backbone=None):
 
 def build_memory_module(config, backbone):
   """Builds a memory module."""
+
+  # --------------------------------------------------------
+  # Figure out model dimensions.
   D = backbone.get_output_dimension()[0]
   K = config.num_classes + 1
   if config.model_class in ['lstm_net', 'lstm_sigmoid_net']:
@@ -59,6 +62,13 @@ def build_memory_module(config, backbone):
   else:
     raise ValueError('Unknown model class {}'.format(config.model_class))
 
+  # --------------------------------------------------------
+  # Build different memory modules.
+  config.memory_net_config.use_ssl_beta_gamma_write = config.hybrid_config.use_ssl_beta_gamma_write  # NOQA
+  config.memory_net_config.fix_unknown = config.fix_unknown
+  config.memory_net_config.unknown_id = config.num_classes
+  config.hybrid_config.readout_type = config.mann_config.readout_type
+
   if config.memory_class in [
       'min_dist_proto_memory', 'ssl_min_dist_proto_memory',
       'ssl_min_dist_forget_proto_memory'
@@ -68,15 +78,7 @@ def build_memory_module(config, backbone):
         config.memory_class,
         name,
         inp_dim,
-        config.memory_net_config.radius_init,
-        max_classes=config.memory_net_config.max_classes,
-        fix_unknown=config.fix_unknown,
-        unknown_id=config.num_classes if config.fix_unknown else None,
-        similarity=config.memory_net_config.similarity,
-        radius_init_write=config.memory_net_config.radius_init_write,
-        use_ssl_beta_gamma_write=config.hybrid_config.use_ssl_beta_gamma_write,
-        unknown_logits=config.memory_net_config.unknown_logits,
-        temp_init=config.memory_net_config.temp_init,
+        config.memory_net_config,
         dtype=tf.float32)
 
   elif config.memory_class in [
@@ -123,16 +125,6 @@ def build_memory_module(config, backbone):
         name,
         inp_dim,
         config.mann_config,
-        # config.mann_config.memory_dim[0],
-        # config.mann_config.controller_dim[0],
-        # config.mann_config.num_slots[0],
-        # config.mann_config.num_reads[0],
-        # config.mann_config.num_writes[0],
-        # controller_type=config.mann_config.controller_type,
-        # memory_layernorm=config.mann_config.memory_layernorm,
-        # controller_layernorm=config.mann_config.controller_layernorm,
-        # controller_nstack=config.mann_config.controller_nstack,
-        # similarity_type=config.mann_config.similarity_type,
         dtype=tf.float32)
   elif config.memory_class in [
       'dnc_writehead_v2',
@@ -146,101 +138,13 @@ def build_memory_module(config, backbone):
         inp_dim,
         label_dim,
         config.mann_config,
-        # config.mann_config.memory_dim[0],
-        # config.mann_config.controller_dim[0],
-        # config.mann_config.num_slots[0],
-        # config.mann_config.num_reads[0],
-        # config.mann_config.num_writes[0],
-        # controller_type=config.mann_config.controller_type,
-        # memory_layernorm=config.mann_config.memory_layernorm,
-        # controller_layernorm=config.mann_config.controller_layernorm,
-        # controller_nstack=config.mann_config.controller_nstack,
-        # similarity_type=config.mann_config.similarity_type,
         dtype=tf.float32)
-
-  elif config.memory_class in ['proto_plus_rnn_v4', 'cpm']:
-    memory_class = config.sub_memory_class
-    memory_class2 = config.sub_memory_class2
-    if memory_class.startswith('dnc'):
-      rnn_memory = get_module(
-          memory_class,
-          'dnc',
-          inp_dim,
-          config.mann_config.memory_dim,
-          config.mann_config.controller_dim,
-          config.mann_config.num_slots,
-          config.mann_config.num_reads,
-          config.mann_config.num_writes,
-          controller_type=config.mann_config.controller_type,
-          memory_layernorm=config.mann_config.memory_layernorm,
-          controller_layernorm=config.mann_config.controller_layernorm,
-          controller_nstack=config.mann_config.controller_nstack,
-          similarity_type=config.mann_config.similarity_type,
-          dtype=tf.float32)
-    elif memory_class in ['stack_lstm']:
-      rnn_memory = get_module(
-          memory_class,
-          "stack_lstm",
-          inp_dim,
-          config.lstm_config.hidden_dim,
-          config.lstm_config.nstack,
-          layernorm=config.lstm_config.layernorm,
-          dtype=tf.float32)
-    elif memory_class in ['lstm']:
-      rnn_memory = get_module(
-          memory_class,
-          "lstm",
-          inp_dim,
-          config.lstm_config.hidden_dim,
-          layernorm=config.lstm_config.layernorm,
-          dtype=tf.float32)
-    proto_memory = get_module(
-        memory_class2,
-        'proto_memory',
-        inp_dim,
-        config.memory_net_config.radius_init,
-        max_classes=config.memory_net_config.max_classes,
-        fix_unknown=config.fix_unknown,
-        unknown_id=config.num_classes if config.fix_unknown else None,
-        similarity=config.memory_net_config.similarity,
-        static_beta_gamma=not config.hybrid_config.use_pred_beta_gamma,
-        unknown_logits=config.memory_net_config.unknown_logits,
-        temp_init=config.memory_net_config.temp_init,
-        dtype=tf.float32)
-    proto_plus_rnn = get_module(
-        config.memory_class,
-        'proto_plus_rnn',
-        proto_memory,
-        rnn_memory,
-        readout_type=config.mann_config.readout_type,
-        use_pred_beta_gamma=config.hybrid_config.use_pred_beta_gamma,
-        use_feature_fuse=config.hybrid_config.use_feature_fuse,
-        use_feature_fuse_gate=config.hybrid_config.use_feature_fuse_gate,
-        use_feature_scaling=config.hybrid_config.use_feature_scaling,
-        use_feature_memory_only=config.hybrid_config.use_feature_memory_only,
-        skip_unk_memory_update=config.hybrid_config.skip_unk_memory_update,
-        dtype=tf.float32)
-    return proto_plus_rnn
-
   elif config.memory_class in ['proto_plus_rnn_ssl_v4', 'cpm_ssl']:
     memory_class = config.sub_memory_class
     memory_class2 = config.sub_memory_class2
     if memory_class.startswith('dnc'):
       rnn_memory = get_module(
-          memory_class,
-          'dnc',
-          inp_dim,
-          config.mann_config.memory_dim,
-          config.mann_config.controller_dim,
-          config.mann_config.num_slots,
-          config.mann_config.num_reads,
-          config.mann_config.num_writes,
-          controller_type=config.mann_config.controller_type,
-          memory_layernorm=config.mann_config.memory_layernorm,
-          controller_layernorm=config.mann_config.controller_layernorm,
-          controller_nstack=config.mann_config.controller_nstack,
-          similarity_type=config.mann_config.similarity_type,
-          dtype=tf.float32)
+          memory_class, 'dnc', inp_dim, config.mann_config, dtype=tf.float32)
     elif memory_class in ['stack_lstm']:
       rnn_memory = get_module(
           memory_class,
@@ -262,30 +166,14 @@ def build_memory_module(config, backbone):
         memory_class2,
         'proto_memory',
         inp_dim,
-        config.memory_net_config.radius_init,
-        max_classes=config.memory_net_config.max_classes,
-        fix_unknown=config.fix_unknown,
-        unknown_id=config.num_classes if config.fix_unknown else None,
-        similarity=config.memory_net_config.similarity,
-        static_beta_gamma=not config.hybrid_config.use_pred_beta_gamma,
-        unknown_logits=config.memory_net_config.unknown_logits,
-        temp_init=config.memory_net_config.temp_init,
+        config.memory_net_config,
         dtype=tf.float32)
     proto_plus_rnn = get_module(
         config.memory_class,
         'proto_plus_rnn',
         proto_memory,
         rnn_memory,
-        readout_type=config.mann_config.readout_type,
-        use_pred_beta_gamma=config.hybrid_config.use_pred_beta_gamma,
-        use_feature_fuse=config.hybrid_config.use_feature_fuse,
-        use_feature_fuse_gate=config.hybrid_config.use_feature_fuse_gate,
-        use_feature_scaling=config.hybrid_config.use_feature_scaling,
-        use_feature_memory_only=config.hybrid_config.use_feature_memory_only,
-        skip_unk_memory_update=config.hybrid_config.skip_unk_memory_update,
-        use_ssl=config.hybrid_config.use_ssl,
-        use_ssl_beta_gamma_write=config.hybrid_config.use_ssl_beta_gamma_write,
-        use_ssl_temp=config.hybrid_config.use_ssl_temp,
+        config.hybrid_config,
         dtype=tf.float32)
     return proto_plus_rnn
 
@@ -297,6 +185,22 @@ def build_memory_module(config, backbone):
   else:
     raise ValueError('Unknown memory class {}'.format(config.memory_class))
   return memory
+
+
+def build_fewshot_net(config, backbone=None):
+  """Builds a prototypical network for few-shot evaluation."""
+  if backbone is None:
+    backbone = build_backbone(config)
+  assert config.model_class in [
+      'proto_net', 'temp_proto_net', 'mask_proto_net', 'proto_net_var',
+      'classifier_net', 'classifier_l1_net', 'classifier_spatiall1_net',
+      'classifier_mlp_net', 'classifier_mask_dist_net',
+      'classifier_mask_dist_net_v2', 'matching_net', 'maml_net', 'maml_l1_net',
+      'imaml_net', 'tadam_net', 'proto_prod_net', 'mask_proto_net_solver',
+      'maml_last_net', 'tafe_net'
+  ]
+  fewshot_net = get_model(config.model_class, config, backbone)
+  return fewshot_net
 
 
 def build_net(config, backbone=None, memory=None, distributed=False):

@@ -17,31 +17,22 @@ log = get_logger()
 class ProtoMemory(ContainerModule):
   """A module that stores prototypes."""
 
-  def __init__(self,
-               name,
-               dim,
-               max_classes=20,
-               fix_unknown=False,
-               unknown_id=None,
-               similarity="euclidean",
-               temp_init=10.0,
-               dtype=tf.float32):
+  def __init__(self, name, dim, config, dtype=tf.float32):
     super(ProtoMemory, self).__init__(dtype=dtype)
-    self._max_classes = max_classes
-    self._fix_unknown = fix_unknown
-    self._unknown_id = unknown_id
-    self._similarity = similarity
+    self._max_classes = config.max_classes
+    self._fix_unknown = config.fix_unknown
+    self._unknown_id = config.unknown_id
+    self._similarity = config.similarity
+    self._normalize_feature = config.normalize_feature
     self._dim = dim
-    if fix_unknown:
+    if config.fix_unknown:
       log.info('Fixing unknown id')
-      assert unknown_id is not None, 'Need to provide unknown ID'
+      assert config.unknown_id is not None, 'Need to provide unknown ID'
 
-    if similarity in ["cosine", "poincare"]:
+    if config.similarity in ["cosine", "poincare"]:
       with variable_scope(name):
-        self._temp = self._get_variable("temp",
-                                        self._get_constant_init([], temp_init))
-        # self._temp = self._get_variable(
-        #     "temp", self._get_constant_init([], temp_init), trainable=False)
+        self._temp = self._get_variable(
+            "temp", self._get_constant_init([], config.temp_init))
 
   def forward_one(self,
                   x,
@@ -66,16 +57,9 @@ class ProtoMemory(ContainerModule):
       p = prototypes
       x_norm = tf.sqrt(tf.reduce_sum(tf.square(x), [-1], keepdims=True))
       p_norm = tf.sqrt(tf.reduce_sum(tf.square(p), [-1], keepdims=True))
-      # if tf.less(tf.reduce_min(x_norm), eps):
-      #   tf.print('x norm too small', tf.reduce_min(x_norm))
-      # if tf.less(tf.reduce_min(p_norm), eps):
-      #   tf.print('p norm too small', tf.reduce_min(p_norm))
-
-      # tf.print(x[0],)
       x_ = x / (x_norm + eps)
       p_ = p / (p_norm + eps)
       x_dot_p = tf.matmul(p_, tf.transpose(x_, [0, 2, 1]))[:, :, 0]  # [B, K]
-      # tf.print()
       return x_dot_p * self._temp
     elif self.similarity == "poincare":
       # Prototypes are stored in Klein space.
@@ -148,6 +132,11 @@ class ProtoMemory(ContainerModule):
     return 2 / sqrt_c * tf.math.atanh(
         sqrt_c * tf.norm(self._mobius_addition_batch(-x, y, c=c), axis=-1))
 
+  def _normalize(self, x):
+    """Normalize the feature vector."""
+    return x / tf.maximum(
+        tf.sqrt(tf.reduce_sum(x**2, [-1], keepdims=True)), 1e-5)
+
   def store(self, x, y, storage, count):
     """Store a new example.
 
@@ -155,6 +144,9 @@ class ProtoMemory(ContainerModule):
       x: Input. [B, ...].
       y: Label. [B].
     """
+    if self._normalize_feature:
+      x = self._normalize(x)
+
     bidx = tf.range(tf.shape(y)[0])  # [B]
     y = tf.cast(y, bidx.dtype)
     idx = tf.stack([bidx, y], axis=1)  # [B, 2]

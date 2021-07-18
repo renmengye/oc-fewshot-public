@@ -15,28 +15,12 @@ from fewshot.models.modules.proto_memory import ProtoMemory
 LOGINF = 1e6
 
 
-# Warning: not used.
 class SemiSupervisedProtoMemory(ProtoMemory):
 
-  def __init__(self,
-               name,
-               dim,
-               max_classes=20,
-               fix_unknown=False,
-               unknown_id=None,
-               similarity="euclidean",
-               temp_init=10.0,
-               dtype=tf.float32):
+  def __init__(self, name, dim, config, dtype=tf.float32):
     super(SemiSupervisedProtoMemory, self).__init__(
-        name,
-        dim,
-        max_classes=max_classes,
-        fix_unknown=fix_unknown,
-        unknown_id=unknown_id,
-        similarity=similarity,
-        temp_init=temp_init,
-        dtype=dtype)
-    assert fix_unknown, 'Not supported'
+        name, dim, config, dtype=dtype)
+    assert config.fix_unknown, 'Not supported'
 
   def forward_one(self,
                   x,
@@ -63,6 +47,9 @@ class SemiSupervisedProtoMemory(ProtoMemory):
       count: Count. [B, K].
       y_soft: Soft label. [B, K].
     """
+    if self._normalize_feature:
+      x = self._normalize(x)
+
     # TODO modify y and try hard ID here.
     bidx = tf.range(y.shape[0], dtype=y.dtype)  # [B]
     idx = tf.stack([bidx, y], axis=1)  # [B, 2]

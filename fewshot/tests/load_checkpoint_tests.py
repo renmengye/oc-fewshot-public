@@ -24,26 +24,31 @@ from fewshot.utils.logger import get as get_logger
 from fewshot.models.variable_context import reset_variables
 
 log = get_logger()
+datasets = {}
 
 
 def test_load_one(folder, seed=0):
-  # log.info('Command line args {}'.format(args))
+  global datasets
   config_file = os.path.join(folder, 'config.prototxt')
   config = get_config(config_file, ExperimentConfig)
-  # config.c4_config.data_format = 'NHWC'
-  # config.resnet_config.data_format = 'NHWC'
   if 'omniglot' in folder:
-    if 'ssl' in folder:
-      data_config_file = 'configs/episodes/roaming-omniglot/roaming-omniglot-150-ssl.prototxt'  # NOQA
-    else:
+    if 'nossl' in folder:
       data_config_file = 'configs/episodes/roaming-omniglot/roaming-omniglot-150.prototxt'  # NOQA
+    else:
+      data_config_file = 'configs/episodes/roaming-omniglot/roaming-omniglot-150-ssl.prototxt'  # NOQA
     env_config_file = 'configs/environ/roaming-omniglot-docker.prototxt'
   elif 'rooms' in folder:
-    if 'ssl' in folder:
+    if 'nossl' in folder:
       data_config_file = 'configs/episodes/roaming-rooms/roaming-rooms-100.prototxt'  # NOQA
     else:
-      data_config_file = 'configs/episodes/roaming-rooms/romaing-rooms-100.prototxt'  # NOQA
+      data_config_file = 'configs/episodes/roaming-rooms/roaming-rooms-100-ssl.prototxt'  # NOQA
     env_config_file = 'configs/environ/roaming-rooms-docker.prototxt'
+  elif 'imagenet' in folder:
+    if 'nossl' in folder:
+      data_config_file = 'configs/episodes/roaming-imagenet/roaming-imagenet-150.prototxt'  # NOQA
+    else:
+      data_config_file = 'configs/episodes/roaming-imagenet/roaming-imagenet-150-ssl.prototxt'  # NOQA
+    env_config_file = 'configs/environ/roaming-imagenet-docker.prototxt'
   data_config = get_config(data_config_file, EpisodeConfig)
   env_config = get_config(env_config_file, EnvironmentConfig)
   log.info('Model: \n{}'.format(config))
@@ -76,7 +81,11 @@ def test_load_one(folder, seed=0):
     restore_steps = int(reload_flag.split('-')[-1])
 
   # Get dataset.
-  dataset = get_data_fs(env_config, load_train=True)
+  if env_config_file in datasets:
+    dataset = datasets[env_config_file]
+  else:
+    dataset = get_data_fs(env_config, load_train=True)
+    datasets[env_config_file] = dataset
 
   # Get data iterators.
   if env_config.dataset in ["roaming-rooms", "matterport"]:
@@ -106,10 +115,13 @@ def test_load_one(folder, seed=0):
   data['test_fs'].reset()
 
   results_all = {}
-  split_list = ['trainval_fs', 'val_fs', 'test_fs']
-  name_list = ['Train', 'Val', 'Test']
-  nepisode_list = [5,5,5]
+  # split_list = ['trainval_fs', 'val_fs', 'test_fs']
+  # name_list = ['Train', 'Val', 'Test']
+  # nepisode_list = [20,20,20]
   # nepisode_list = [600, config.num_episodes, config.num_episodes]
+  split_list = ['test_fs']
+  name_list = ['Test']
+  nepisode_list = [600]
 
   for split, name, N in zip(split_list, name_list, nepisode_list):
     # print(name)
@@ -117,12 +129,11 @@ def test_load_one(folder, seed=0):
     r1 = evaluate(mem_model, data[split], N, verbose=False)
     stats = get_stats(r1, tmax=data_config.maxlen)
     print(split, stats['ap'])
-    # log_results(stats, prefix=name, filename=logfile)
 
 
 def main():
   dir_path = os.path.dirname(os.path.realpath(__file__))
-  with log.verbose_level(0):
+  with log.verbose_level(2):
     for ln in open(os.path.join(dir_path, 'checkpoints.txt'), 'r').readlines():
       reset_variables()
       print(ln)

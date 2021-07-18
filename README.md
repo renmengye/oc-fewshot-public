@@ -1,18 +1,14 @@
 # oc-fewshot-public
 
-Code for paper *Wandering Within a World: Online Contextualized Few-Shot
-Learning* [[arxiv](https://arxiv.org/abs/2007.04546)]
-
-Authors: Mengye Ren, Michael L. Iuzzolino, Michael C. Mozer, Richard S. Zemel
+Code for our ICLR 2021 paper
+*Wandering Within a World: Online Contextualized Few-Shot Learning* 
+[[arxiv](https://arxiv.org/abs/2007.04546)]
 
 ## RoamingRooms Dataset
 
 <span>
-<img src="img/vid1.gif" width="250"><img src="img/vid2.gif" width="250"><img src="img/vid3.gif" width="250"></span>
-<!--
-![](img/vid1.gif | width=150)
-![](img/vid2.gif | width=150)
-![](img/vid3.gif | width=150) -->
+<img src="img/vid1.gif" width="250"><img src="img/vid2.gif" width="250"><img src="img/vid3.gif" width="250">
+</span>
 
 Although our code base is MIT licensed, the RoamingRooms dataset is not since
 it is derived from the Matterport3D dataset.
@@ -31,14 +27,11 @@ The whole dataset is around 60 GB. It has 1.2M video frames with 7k unique
 object instance classes. Please refer to our paper for more statistics of the
 dataset.
 
-If you have downloaded the full Matterport3D dataset already, check [here](sim)
-for a script to generate RoamingRooms.
-
 ## System Requirements
 
 Our code is tested on Ubuntu 18.04 with GPU capability. We provide docker
 files for reproducible environments. We recommend at least 20GB CPU memory and
-11GB GPU memory. 2-4 GPUs are required for multi-GPU experiments. Our code
+11GB GPU memory. 2-4 GPUs are required for multi-GPU experiments. Our code 
 is based on TensorFlow 2.
 
 ## Installation Using Docker (Recommended)
@@ -82,7 +75,7 @@ conda install pip
 
 8. Modify installation paths in `install.sh`
 
-9. Run `install.sh`
+9. Run `install.sh` 
 
 
 ## Setup Datasets
@@ -156,6 +149,8 @@ Table 1: RoamingOmniglot Results (Supervised)
 
 | Method             | AP      | 1-shot Acc.    | 3-shot Acc.    | Checkpoint        |
 |:------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM               | 64.34   | 61.00 ± 0.22   | 81.85 ± 0.21   |[link](https://bit.ly/2ALqvWo)|
+| DNC                | 81.30   | 78.87 ± 0.19   | 91.01 ± 0.15   |[link](https://bit.ly/2Y93gP0)|
 | OML-U              | 77.38   | 70.98 ± 0.21   | 89.13 ± 0.16   |[link](https://bit.ly/3lcAkPd)|
 | OML-U++            | 86.85   | 88.43 ± 0.14   | 92.07 ± 0.14   |[link](https://bit.ly/32q2or3)|
 | Online MatchingNet | 88.69   | 84.82 ± 0.15   | 95.55 ± 0.11   |[link](https://bit.ly/3edu8D4)|
@@ -168,6 +163,8 @@ Table 2: RoamingOmniglot Results (Semi-supervised)
 
 | Method             | AP      | 1-shot  Acc.   | 3-shot Acc.    | Checkpoint        |
 |:------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM               | 54.34   | 68.30 ± 0.20   | 76.38 ± 0.49   |[link](https://bit.ly/2UP1HUj)|
+| DNC                | 81.37   | 88.56 ± 0.12   | 93.81 ± 0.26   |[link](https://bit.ly/2YcVFyR)|
 | OML-U              | 66.70   | 74.65 ± 0.19   | 90.81 ± 0.34   |[link](https://bit.ly/2UdezTf)|
 | OML-U++            | 81.39   | 89.07 ± 0.19   | 89.40 ± 0.18   |[link](https://bit.ly/3mYo3OG)|
 | Online MatchingNet | 84.39   | 88.77 ± 0.13   | 97.28 ± 0.17   |[link](https://bit.ly/3hDPDiA)|
@@ -180,6 +177,8 @@ Table 3: RoamingRooms Results (Supervised)
 
 | Method             | AP      | 1-shot Acc.    | 3-shot Acc.    | Checkpoint        |
 |:------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM               | 45.67   | 59.90 ± 0.40   | 61.85 ± 0.45   |[link](https://bit.ly/2AOARoi)|
+| DNC                | 80.86   | 82.15 ± 0.32   | 87.30 ± 0.30   |[link](https://bit.ly/3fAYtM8)|
 | OML-U              | 76.27   | 73.91 ± 0.37   | 83.99 ± 0.33   |[link](https://bit.ly/2GEa6WC)|
 | OML-U++            | 88.03   | 88.32 ± 0.27   | 89.61 ± 0.29   |[link](https://bit.ly/3eIb14X)|
 | Online MatchingNet | 85.91   | 82.82 ± 0.32   | 89.99 ± 0.26   |[link](https://bit.ly/3ddvAUG)|
@@ -191,6 +190,8 @@ Table 4: RoamingRooms Results (Semi-supervised)
 
 | Method             | AP      | 1-shot Acc.    | 3-shot Acc.    | Checkpoint        |
 |:------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM               | 33.32   | 52.71 ± 0.38   | 55.83 ± 0.76   |[link](https://bit.ly/2YHYebm)|
+| DNC                | 73.49   | 80.27 ± 0.33   | 87.87 ± 0.49   |[link](https://bit.ly/37Pkww1)|
 | OML-U              | 63.40   | 70.67 ± 0.38   | 85.25 ± 0.56   |[link](https://bit.ly/32rnWU6)|
 | OML-U++            | 81.90   | 84.79 ± 0.31   | 89.80 ± 0.47   |[link](https://bit.ly/38rCpDc)|
 | Online MatchingNet | 78.99   | 80.08 ± 0.34   |**92.43** ± 0.41|[link](https://bit.ly/2YKD3VR)|
@@ -198,6 +199,42 @@ Table 4: RoamingRooms Results (Semi-supervised)
 | Online ProtoNet    | 76.36   | 80.67 ± 0.34   | 88.83 ± 0.49   |[link](https://bit.ly/3hzXNbA)|
 | CPM (Ours)         |**84.12**|**86.17** ± 0.30| 91.16 ± 0.44   |[link](https://bit.ly/3pclqus)|
 
+
+Table 5: RoamingImageNet Results (Supervised)
+
+| Method             | AP      | 1-shot Acc.    | 3-shot Acc.    | Checkpoint        |
+|:------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM                  |  7.73   | 11.60 ± 0.12   | 43.93 ± 0.27   |[link](https://bit.ly/3sAAyDS)|
+| LSTM`*`               | 22.54   | 28.14 ± 0.20   | 52.07 ± 0.27   |[link](https://bit.ly/3sAUnuA)|
+| DNC                   |  7.20   | 10.55 ± 0.11   | 42.22 ± 0.27   |[link](https://bit.ly/38PPRkb)|
+| DNC`*`                | 26.80   | 33.45 ± 0.19   | 55.78 ± 0.27   |[link](https://bit.ly/39CZimk)|
+| OML-U                 | 21.89   | 15.06 ± 0.14   | 52.52 ± 0.27   |[link](https://bit.ly/2N5KaWM)|
+| OML-U Cos             | 10.87   | 24.45 ± 0.18   | 30.89 ± 0.24   |[link](https://bit.ly/3qxrs8O)|
+| Online MatchingNet    | 13.05   | 20.61 ± 0.15   | 38.73 ± 0.24   |[link](https://bit.ly/3bMpOMH)|
+| Online IMP            | 14.25   | 22.92 ± 0.16   | 41.01 ± 0.25   |[link](https://bit.ly/2LyEioR)|
+| Online ProtoNet       | 15.51   | 22.95 ± 0.17   | 44.98 ± 0.25   |[link](https://bit.ly/2XM6mY8)|
+| Online ProtoNet`*`    | 23.10   | 32.82 ± 0.19   | 49.98 ± 0.25   |[link](https://bit.ly/3nTIIUn)|
+| CPM (Ours)            |**34.43**|**40.40** ± 0.21|**60.29** ± 0.26|[link](https://bit.ly/2XRe2bM)|
+
+`*` denotes using pretrained CNN. 
+
+Table 6: RoamingImageNet Results (Semi-supervised)
+
+| Method                | AP      | 1-shot Acc.    | 3-shot Acc.    | Checkpoint        |
+|:---------------------:|:-------:|:--------------:|:--------------:|:-----------------:|
+| LSTM                  |  4.03   | 22.53 ± 0.18   | 41.34 ± 0.55   |[link](https://bit.ly/3ssC8aG)|
+| LSTM`*`               | 13.50   | 30.02 ± 0.20   | 46.95 ± 0.56   |[link](https://bit.ly/3bOiWOU)|
+| DNC                   |  3.66   | 22.37 ± 0.18   | 37.83 ± 0.54   |[link](https://bit.ly/38Um35K)|
+| DNC`*`                | 16.50   | 39.53 ± 0.19   | 54.10 ± 0.54   |[link](https://bit.ly/3bMrfe3)|
+| OML-U                 | 10.16   | 22.74 ± 0.17   | 55.81 ± 0.55   |[link](https://bit.ly/38POx0H)|
+| OML-U Cos             |  5.65   | 23.37 ± 0.16   | 32.79 ± 0.50   |[link](https://bit.ly/2M0ETPG)|
+| Online MatchingNet    |  9.32   | 25.96 ± 0.16   | 55.32 ± 0.51   |[link](https://bit.ly/3bK2rmV)|
+| Online IMP            |  4.55   | 20.70 ± 0.15   | 51.23 ± 0.53   |[link](https://bit.ly/35Ks5nN)|
+| Online ProtoNet       |  7.10   | 26.87 ± 0.16   | 42.40 ± 0.52   |[link](https://bit.ly/3ipUchg)|
+| Online ProtoNet`*`    | 15.76   | 36.69 ± 0.18   | 55.47 ± 0.53   |[link](https://bit.ly/3sympXA)|
+| CPM (Ours)            |**24.75**|**44.58** ± 0.21|**58.72** ± 0.53|[link](https://bit.ly/3szbUU5)|
+
+`*` denotes using pretrained CNN. 
 
 ## To-Do
 
@@ -208,17 +245,16 @@ Table 4: RoamingRooms Results (Semi-supervised)
 If you use our code, please consider cite the following:
 * Mengye Ren, Michael L. Iuzzolino, Michael C. Mozer and Richard S. Zemel.
   Wandering Within a World: Online Contextualized Few-Shot Learning.
-  *CoRR*, abs/2007.04546, 2020.
+  In *ICLR*, 2021.
 
 ```
-@article{ren20ocfewshot,
-  author   = {Mengye Ren and
-              Michael L. Iuzzolino and
-              Michael C. Mozer and
-              Richard S. Zemel},
-  title    = {Wandering Within a World: Online Contextualized Few-Shot Learning},
-  journal  = {CoRR},
-  volume   = {abs/2007.04546},
-  year     = {2020},
+@inproceedings{ren21ocfewshot,
+  author    = {Mengye Ren and
+               Michael L. Iuzzolino and
+               Michael C. Mozer and
+               Richard S. Zemel},
+  title     = {Wandering Within a World: Online Contextualized Few-Shot Learning},
+  booktitle = {9th International Conference on Learning Representations, {ICLR}},
+  year      = {2021}
 }
 ```

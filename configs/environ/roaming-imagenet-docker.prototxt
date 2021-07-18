@@ -1,0 +1,12 @@
+data_folder: "./data/tiered-imagenet-orig"
+dataset: "tiered-imagenet"
+results: "./results/oc-fewshot"
+checkpoint: "/checkpoint/mren"
+train_fs_split: "train"
+val_fs_split: "val"
+test_fs_split: "test"
+image_size: 84
+crop_size: 92
+random_crop: false
+random_flip: false
+random_color: false

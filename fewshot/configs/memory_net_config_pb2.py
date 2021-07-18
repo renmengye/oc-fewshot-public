@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='fewshot.configs',
   syntax='proto2',
   serialized_options=None,
-  serialized_pb=_b('\n\'fewshot/configs/memory_net_config.proto\x12\x0f\x66\x65wshot.configs\"\xbf\x02\n\x0fMemoryNetConfig\x12\x13\n\x0bmax_classes\x18\x01 \x01(\x05\x12\x13\n\x0bradius_init\x18\x02 \x01(\x02\x12\r\n\x05\x61lpha\x18\x03 \x01(\x02\x12\x11\n\tmax_items\x18\x04 \x01(\x05\x12\x16\n\x0elog_sigma_init\x18\x05 \x01(\x02\x12\x17\n\x0flog_lambda_init\x18\x06 \x01(\x02\x12\x12\n\nmax_stages\x18\x07 \x01(\x05\x12\x13\n\x0b\x62uffer_size\x18\x08 \x01(\x05\x12\x16\n\x0e\x62uffer_dropout\x18\t \x01(\x08\x12\x1d\n\nsimilarity\x18\n \x01(\t:\teuclidean\x12\x19\n\x11radius_init_write\x18\x0b \x01(\x02\x12\x1d\n\x0eunknown_logits\x18\x0c \x01(\t:\x05radii\x12\x15\n\ttemp_init\x18\r \x01(\x02:\x02\x31\x30')
+  serialized_pb=_b('\n\'fewshot/configs/memory_net_config.proto\x12\x0f\x66\x65wshot.configs\"\xf3\x03\n\x0fMemoryNetConfig\x12\x13\n\x0bmax_classes\x18\x01 \x01(\x05\x12\x13\n\x0bradius_init\x18\x02 \x01(\x02\x12\r\n\x05\x61lpha\x18\x03 \x01(\x02\x12\x11\n\tmax_items\x18\x04 \x01(\x05\x12\x16\n\x0elog_sigma_init\x18\x05 \x01(\x02\x12\x17\n\x0flog_lambda_init\x18\x06 \x01(\x02\x12\x12\n\nmax_stages\x18\x07 \x01(\x05\x12\x13\n\x0b\x62uffer_size\x18\x08 \x01(\x05\x12\x16\n\x0e\x62uffer_dropout\x18\t \x01(\x08\x12\x1d\n\nsimilarity\x18\n \x01(\t:\teuclidean\x12\x19\n\x11radius_init_write\x18\x0b \x01(\x02\x12\x1d\n\x0eunknown_logits\x18\x0c \x01(\t:\x05radii\x12\x15\n\ttemp_init\x18\r \x01(\x02:\x02\x31\x30\x12\x1a\n\x0c\x64\x65nse_update\x18\x0e \x01(\x08:\x04true\x12\x19\n\rgru_bias_init\x18\x0f \x01(\x02:\x02-2\x12 \n\x11normalize_feature\x18\x10 \x01(\x08:\x05\x66\x61lse\x12&\n\x18use_ssl_beta_gamma_write\x18\x11 \x01(\x08:\x04true\x12\x19\n\x0b\x66ix_unknown\x18\x12 \x01(\x08:\x04true\x12\x16\n\nunknown_id\x18\x13 \x01(\x05:\x02\x34\x30')
 )
 
 
@@ -124,6 +124,48 @@ _MEMORYNETCONFIG = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='dense_update', full_name='fewshot.configs.MemoryNetConfig.dense_update', index=13,
+      number=14, type=8, cpp_type=7, label=1,
+      has_default_value=True, default_value=True,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='gru_bias_init', full_name='fewshot.configs.MemoryNetConfig.gru_bias_init', index=14,
+      number=15, type=2, cpp_type=6, label=1,
+      has_default_value=True, default_value=float(-2),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='normalize_feature', full_name='fewshot.configs.MemoryNetConfig.normalize_feature', index=15,
+      number=16, type=8, cpp_type=7, label=1,
+      has_default_value=True, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='use_ssl_beta_gamma_write', full_name='fewshot.configs.MemoryNetConfig.use_ssl_beta_gamma_write', index=16,
+      number=17, type=8, cpp_type=7, label=1,
+      has_default_value=True, default_value=True,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='fix_unknown', full_name='fewshot.configs.MemoryNetConfig.fix_unknown', index=17,
+      number=18, type=8, cpp_type=7, label=1,
+      has_default_value=True, default_value=True,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='unknown_id', full_name='fewshot.configs.MemoryNetConfig.unknown_id', index=18,
+      number=19, type=5, cpp_type=1, label=1,
+      has_default_value=True, default_value=40,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -137,7 +179,7 @@ _MEMORYNETCONFIG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=61,
-  serialized_end=380,
+  serialized_end=560,
 )
 
 DESCRIPTOR.message_types_by_name['MemoryNetConfig'] = _MEMORYNETCONFIG

@@ -65,24 +65,26 @@ class GRU(ContainerModule):
     return self._nout
 
 
-@RegisterModule('gru1dmod')
-class GRU1DMod(GRU):
+
+@RegisterModule('gau')
+class GAU(ContainerModule):
   """GRU with 1-d gates and without activation"""
 
-  def __init__(self, name, nin, nout, layernorm=False, dtype=tf.float32):
-    super(GRU, self).__init__(dtype=dtype)
+  def __init__(self,
+               name,
+               nin,
+               nout,
+               layernorm=False,
+               bias_init=-2.0,
+               dtype=tf.float32):
+    super(GAU, self).__init__(dtype=dtype)
     self._nin = nin
     self._nout = nout
     self._layernorm = layernorm
     self._gates = Linear(
-        "gates_linear", nin + nout, 1, b_init=lambda: -tf.ones(1) * 2.0)
-    # self._gates = Linear(
-    #     "gates_linear", nin + nout, 1, b_init=lambda: tf.ones(1) * 2.0)
-    # self._gates = Linear(
-    #     "gates_linear", nin + nout, 1, b_init=lambda: tf.zeros(1))
+        "gates_linear", nin + nout, 1, b_init=lambda: tf.ones(1) * bias_init)
     if layernorm:
       self._ln = LayerNorm("layernorm", nin + nout, dtype=dtype)
-      # assert False
 
   def forward(self, x, h_last):
     """Forward one timestep.
@@ -103,6 +105,27 @@ class GRU1DMod(GRU):
     h = (1.0 - f_gate) * h_last + f_gate * x
     return h, h
 
+  def end_iteration(self, h_last):
+    return h_last
+
+  def get_initial_state(self, bsize):
+    return tf.zeros([bsize, self.nout], dtype=self.dtype)
+
+  @property
+  def nin(self):
+    return self._nin
+
+  @property
+  def nout(self):
+    return self._nout
+
+  @property
+  def in_dim(self):
+    return self._nin
+
+  @property
+  def memory_dim(self):
+    return self._nout
 
 @RegisterModule('lstm1dmod')
 class LSTM1DMod(ContainerModule):

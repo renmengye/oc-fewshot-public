@@ -14,5 +14,4 @@ class NCHWPreprocessor(Preprocessor):
 
   @tf.function
   def preprocess(self, inputs):
-    tf.print(tf.shape(inputs))
     return tf.transpose(inputs, [0, 3, 1, 2])

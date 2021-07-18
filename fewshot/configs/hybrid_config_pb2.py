@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='fewshot.configs',
   syntax='proto2',
   serialized_options=None,
-  serialized_pb=_b('\n#fewshot/configs/hybrid_config.proto\x12\x0f\x66\x65wshot.configs\"\xe9\x02\n\x0cHybridConfig\x12!\n\x13use_pred_beta_gamma\x18\x01 \x01(\x08:\x04true\x12\x1e\n\x10use_feature_fuse\x18\x02 \x01(\x08:\x04true\x12#\n\x15use_feature_fuse_gate\x18\x03 \x01(\x08:\x04true\x12!\n\x13use_feature_scaling\x18\x04 \x01(\x08:\x04true\x12&\n\x17use_feature_memory_only\x18\x05 \x01(\x08:\x05\x66\x61lse\x12$\n\x15use_element_fuse_gate\x18\x06 \x01(\x08:\x05\x66\x61lse\x12%\n\x16skip_unk_memory_update\x18\x64 \x01(\x08:\x05\x66\x61lse\x12\x15\n\x07use_ssl\x18\x65 \x01(\x08:\x04true\x12&\n\x18use_ssl_beta_gamma_write\x18\x66 \x01(\x08:\x04true\x12\x1a\n\x0cuse_ssl_temp\x18g \x01(\x08:\x04true')
+  serialized_pb=_b('\n#fewshot/configs/hybrid_config.proto\x12\x0f\x66\x65wshot.configs\"\x87\x03\n\x0cHybridConfig\x12!\n\x13use_pred_beta_gamma\x18\x01 \x01(\x08:\x04true\x12\x1e\n\x10use_feature_fuse\x18\x02 \x01(\x08:\x04true\x12#\n\x15use_feature_fuse_gate\x18\x03 \x01(\x08:\x04true\x12!\n\x13use_feature_scaling\x18\x04 \x01(\x08:\x04true\x12&\n\x17use_feature_memory_only\x18\x05 \x01(\x08:\x05\x66\x61lse\x12$\n\x15use_element_fuse_gate\x18\x06 \x01(\x08:\x05\x66\x61lse\x12\x1c\n\x0creadout_type\x18\x07 \x01(\t:\x06linear\x12%\n\x16skip_unk_memory_update\x18\x64 \x01(\x08:\x05\x66\x61lse\x12\x15\n\x07use_ssl\x18\x65 \x01(\x08:\x04true\x12&\n\x18use_ssl_beta_gamma_write\x18\x66 \x01(\x08:\x04true\x12\x1a\n\x0cuse_ssl_temp\x18g \x01(\x08:\x04true')
 )
 
 
@@ -76,28 +76,35 @@ _HYBRIDCONFIG = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='skip_unk_memory_update', full_name='fewshot.configs.HybridConfig.skip_unk_memory_update', index=6,
+      name='readout_type', full_name='fewshot.configs.HybridConfig.readout_type', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=True, default_value=_b("linear").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='skip_unk_memory_update', full_name='fewshot.configs.HybridConfig.skip_unk_memory_update', index=7,
       number=100, type=8, cpp_type=7, label=1,
       has_default_value=True, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='use_ssl', full_name='fewshot.configs.HybridConfig.use_ssl', index=7,
+      name='use_ssl', full_name='fewshot.configs.HybridConfig.use_ssl', index=8,
       number=101, type=8, cpp_type=7, label=1,
       has_default_value=True, default_value=True,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='use_ssl_beta_gamma_write', full_name='fewshot.configs.HybridConfig.use_ssl_beta_gamma_write', index=8,
+      name='use_ssl_beta_gamma_write', full_name='fewshot.configs.HybridConfig.use_ssl_beta_gamma_write', index=9,
       number=102, type=8, cpp_type=7, label=1,
       has_default_value=True, default_value=True,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='use_ssl_temp', full_name='fewshot.configs.HybridConfig.use_ssl_temp', index=9,
+      name='use_ssl_temp', full_name='fewshot.configs.HybridConfig.use_ssl_temp', index=10,
       number=103, type=8, cpp_type=7, label=1,
       has_default_value=True, default_value=True,
       message_type=None, enum_type=None, containing_type=None,
@@ -116,7 +123,7 @@ _HYBRIDCONFIG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=57,
-  serialized_end=418,
+  serialized_end=448,
 )
 
 DESCRIPTOR.message_types_by_name['HybridConfig'] = _HYBRIDCONFIG

@@ -26,6 +26,7 @@ class MinDistProtoMemory(ProtoMemory):
                fix_unknown=False,
                unknown_id=None,
                similarity="euclidean",
+               normalize_feature=False,
                static_beta_gamma=True,
                unknown_logits="radii",
                temp_init=10.0,
@@ -38,6 +39,7 @@ class MinDistProtoMemory(ProtoMemory):
         fix_unknown=fix_unknown,
         unknown_id=unknown_id,
         similarity=similarity,
+        normalize_feature=normalize_feature,
         temp_init=temp_init,
         dtype=dtype)
     self._radius_init = radius_init

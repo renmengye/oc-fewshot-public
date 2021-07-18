@@ -13,6 +13,7 @@ message HybridConfig {
   optional bool use_feature_scaling = 4 [default = true];
   optional bool use_feature_memory_only = 5 [default = false];
   optional bool use_element_fuse_gate = 6 [default = false];
+  optional string readout_type = 7 [default = "linear"];
   optional bool skip_unk_memory_update = 100 [default = false];
   optional bool use_ssl = 101 [default = true];
   optional bool use_ssl_beta_gamma_write = 102 [default = true];

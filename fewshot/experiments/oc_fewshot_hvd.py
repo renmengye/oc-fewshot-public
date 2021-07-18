@@ -11,14 +11,16 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import horovod.tensorflow as hvd
-hvd.init()
-gpus = tf.config.experimental.list_physical_devices('GPU')
-for gpu in gpus:
-  tf.config.experimental.set_memory_growth(gpu, True)
-if gpus:
-  tf.config.experimental.set_visible_devices(
-      gpus[hvd.local_rank() % len(gpus)], 'GPU')
-is_chief = hvd.rank() == 0
+
+if __name__ == '__main__':
+  hvd.init()
+  gpus = tf.config.experimental.list_physical_devices('GPU')
+  for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
+  if gpus:
+    tf.config.experimental.set_visible_devices(
+        gpus[hvd.local_rank() % len(gpus)], 'GPU')
+  is_chief = hvd.rank() == 0
 
 from fewshot.configs.environment_config_pb2 import EnvironmentConfig
 from fewshot.configs.episode_config_pb2 import EpisodeConfig

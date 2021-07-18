@@ -34,37 +34,23 @@ def swish(x):
 @RegisterModule('proto_plus_rnn_ssl_v4')
 class CPMSSL(ContainerModule):
 
-  def __init__(self,
-               name,
-               proto_memory,
-               rnn_memory,
-               readout_type='linear',
-               use_pred_beta_gamma=True,
-               use_feature_fuse=True,
-               use_feature_fuse_gate=True,
-               use_feature_scaling=True,
-               use_feature_memory_only=False,
-               skip_unk_memory_update=False,
-               use_ssl=True,
-               use_ssl_beta_gamma_write=True,
-               use_ssl_temp=True,
-               dtype=tf.float32):
+  def __init__(self, name, proto_memory, rnn_memory, config, dtype=tf.float32):
     super(CPMSSL, self).__init__(dtype=dtype)
     self._rnn_memory = rnn_memory
     self._proto_memory = proto_memory
 
     # ------------- Feature Fusing Capability Ablation --------------
-    self._use_pred_beta_gamma = use_pred_beta_gamma  # CHECK
-    self._use_feature_fuse = use_feature_fuse  # CHECK
-    self._use_feature_fuse_gate = use_feature_fuse_gate  # CHECK
-    self._use_feature_scaling = use_feature_scaling  # CHECK
-    self._use_feature_memory_only = use_feature_memory_only  # CHECK
+    self._use_pred_beta_gamma = config.use_pred_beta_gamma  # CHECK
+    self._use_feature_fuse = config.use_feature_fuse  # CHECK
+    self._use_feature_fuse_gate = config.use_feature_fuse_gate  # CHECK
+    self._use_feature_scaling = config.use_feature_scaling  # CHECK
+    self._use_feature_memory_only = config.use_feature_memory_only  # CHECK
 
     # ------------- SSL Capability Ablation --------------
-    self._skip_unk_memory_update = skip_unk_memory_update  # CHECK
-    self._use_ssl = use_ssl  # CHECK
-    self._use_ssl_beta_gamma_write = use_ssl_beta_gamma_write  # CHECK
-    self._use_ssl_temp = use_ssl_temp  # CHECK
+    self._skip_unk_memory_update = config.skip_unk_memory_update  # CHECK
+    self._use_ssl = config.use_ssl  # CHECK
+    self._use_ssl_beta_gamma_write = config.use_ssl_beta_gamma_write  # CHECK
+    self._use_ssl_temp = config.use_ssl_temp  # CHECK
 
     D_in = self._rnn_memory.memory_dim
     D = self._rnn_memory.in_dim
@@ -97,23 +83,21 @@ class CPMSSL(ContainerModule):
     def b_init():
       return bias_init
 
-    if readout_type == 'linear':
+    if config.readout_type == 'linear':
       log.info("Using linear readout")
       self._readout = Linear('readout', D_in, D_out, b_init=b_init)
-    elif readout_type == 'mlp':
+    elif config.readout_type == 'mlp':
       log.info("Using MLP readout")
       self._readout = MLP(
           'readout_mlp', [D_in, D_out, D_out],
           bias_init=[None, bias_init],
           act_func=[tf.math.tanh])
-    elif readout_type == 'resmlp':
+    elif config.readout_type == 'resmlp':
       log.info("Using ResMLP readout")
       # -----AFFINE--------
       self._readout = ResMLP(
-          'readout_mlp',
-          [D_in, D_out, D_out, D_out],
+          'readout_mlp', [D_in, D_out, D_out, D_out],
           bias_init=[None, None, bias_init],
-          # bias_init=[None, None, None],
           act_func=[swish, swish, None])
 
   def forward(self, t, x, y, *states, store=False, ssl_store=None):
@@ -124,7 +108,6 @@ class CPMSSL(ContainerModule):
     h_last = states[-2]
     pred_last = states[-1]
     x_rnn = x
-    # tf.print('t', t)
     rnn_out, rnn_states_new = self._rnn_memory.forward(x_rnn, *rnn_states)
 
     if self._skip_unk_memory_update:

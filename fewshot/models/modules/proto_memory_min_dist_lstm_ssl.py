@@ -30,6 +30,7 @@ class SemiSupervisedMinDistLSTMProtoMemory(SemiSupervisedMinDistProtoMemory):
                fix_unknown=False,
                unknown_id=None,
                similarity="euclidean",
+               normalize_feature=False,
                static_beta_gamma=True,
                radius_init_write=None,
                use_ssl_beta_gamma_write=True,
@@ -41,6 +42,7 @@ class SemiSupervisedMinDistLSTMProtoMemory(SemiSupervisedMinDistProtoMemory):
         fix_unknown=fix_unknown,
         unknown_id=unknown_id,
         similarity=similarity,
+        normalize_feature=normalize_feature,
         dtype=dtype)
     self._radius_init = radius_init
     log.info('Radius init {}'.format(radius_init))

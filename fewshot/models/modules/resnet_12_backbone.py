@@ -155,7 +155,7 @@ class Resnet12Backbone(Backbone):
       # Build residual unit.
       prefix = "unit_{}_{}".format(ss + 1, ii)
       add_relu = True if ll < nlayers - 1 or config.add_last_relu else False
-      log.info('{dd relu', add_relu)
+      log.info('Add relu {}'.format(add_relu))
       m = ResidualModule(
           prefix,
           in_filter,

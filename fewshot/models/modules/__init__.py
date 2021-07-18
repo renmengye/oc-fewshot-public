@@ -7,7 +7,7 @@ from .cpm_ssl import CPMSSL  # NOQA
 from .dnc import DNC  # NOQA
 from .dnc_writehead_v2 import DNCWriteHeadFeed2  # NOQA
 from .example_memory import ExampleMemory  # NOQA
-from .gru import GRU, GRU1DMod  # NOQA
+from .gru import GRU, GAU  # NOQA
 from .lstm import LSTM, StackLSTM  # NOQA
 from .mann import MANN  # NOQA
 from .oml import OML  # NOQA
@@ -18,7 +18,7 @@ from .online_classifier import OnlineOVRSVM  # NOQA
 from .online_classifier import OnlineLR  # NOQA
 from .proto_memory_min_dist import MinDistProtoMemory  # NOQA
 from .proto_memory_min_dist_forget_ssl import SemiSupervisedMinDistForgetProtoMemory  # NOQA
-from .proto_memory_min_dist_gru_ssl import SemiSupervisedMinDistGRUProtoMemory  # NOQA
+from .proto_memory_min_dist_gau_ssl import SemiSupervisedMinDistGAUProtoMemory  # NOQA
 from .proto_memory_min_dist_lstm_ssl import SemiSupervisedMinDistLSTMProtoMemory  # NOQA
 from .proto_memory_min_dist_ssl import SemiSupervisedMinDistProtoMemory  # NOQA
 from .resnet_12_backbone import Resnet12Backbone  # NOQA
